@@ -3,8 +3,10 @@ Modified version of Mark Rosenfelder's (zompist.com) gen - language text generat
 
 Changed the look and feel of Mark Rosenfelder's awesome language text generator on [zompist.com](http://www.zompist.com/gen.html) to look better and work on mobiles. I really love his generator, but I feel the user interface is really dated, and does not hold up to modern web standards.
 
+The most up-to-date version can be found on my github.io page (direct link [here](https://bodzaital.github.io/conlang/)). Older versions are listed below, and kept for (mainly my own) legacy reasons.
+
 ## Changelog
- - v2017.1: Changed look and feel. The app uses bootstrap, and has a responsive layout that works on mobiles and desktops. No extra functionality added. This release aimed to port every part of the original to a more modern interface.
+ - [v2017.1](https://bodzaital.github.io/conlang/): Changed look and feel. The app uses bootstrap, and has a responsive layout that works on mobiles and desktops. No extra functionality added. This release aimed to port every part of the original to a more modern interface.
  
 ## Roadmap
 I plan on adding additional features to the app, like a better "how to" dialog, different functions for buttons, and contextual help messages.
