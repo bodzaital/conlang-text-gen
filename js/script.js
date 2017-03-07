@@ -359,10 +359,11 @@ function process()
 
 	// Error checking
 	if (ncat <= 0 || nsyl <= 0) {
-		ss = "You must have both categories and syllables to generate text.";
+		ss = '<div class="alert alert-danger" role="alert"><strong>Error!</strong> You must have both categories and syllables to generate text.</div>';
 	} else if (badcats) {
-		ss = "Categories must be of the form V=aeiou<br>" +
-		"That is, a single letter, an equal sign, then a list of possible expansions.";
+		ss = '<div class="alert alert-danger" role="alert"><strong>Error!</strong> Categories must be in the form of <code>V=aeiou</code>. That is, a single letter, an equal sign, then a list of possible expansions.</div';
+	} else if (theform.syls.value == "") {
+		ss = '<div class="alert alert-danger" role="alert"><strong>Error!</strong> There must be at least one syllable type.</div>';
 	} else {
 		// Actually generate text
 
@@ -390,6 +391,21 @@ function erase()
 function helpme() 
 {
 	window.open("genhelp.html"); 
+}
+
+function clearAll()
+{
+	if (confirm("Are you sure you want to clear the Categories, Rewrite rules, and Syllable types? It cannot be reversed!"))
+	{
+		console.log("log 'o' shit");
+		var cats = document.querySelector("#cats");
+		var rewrite = document.querySelector("#rewrite")
+		var syls = document.querySelector("#syls")
+		cats.value = "";
+		rewrite.value = "";
+		syls.value = "";
+		erase();
+	}
 }
 
 // Parse the Cat field into the three input fields
