@@ -1,14 +1,4 @@
-	h2
-		{color:#A60000;}
-	h3
-		{color:#C08700;}
-	h4
-		{color:#C08700;}
-	h5
-		{color:#C08700;}
-	h6
-		{color:#C08700;}
-	tt
-		{color:#A60000;
-		font-weight:bold;
-		font-family:"Gentium";}
+.form-control
+{
+	font-family: Consolas, monaco, monospace;
+}
