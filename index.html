@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Language Text Generator</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body class="container">
+	<h1>Language Text Generator v2017</h1>
+	<form name="theform">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="cats">Categories</label>
+					<textarea class="form-control" id="cats" name="cats" rows="10">C=ptkbdg&#13;&#10;R=rl&#13;&#10;V=ieaou</textarea>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="rewrite">Rewrite rules</label>
+					<textarea class="form-control" id="rewrite" name="rewrite" rows="10">ki|&#x010d;i</textarea>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="syls">Syllable types</label>
+					<textarea class="form-control" id="syls" name="syls" rows="10">CV&#13;&#10;V&#13;&#10;CRV</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<h4>Output type</h4>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="outtype" value="text" checked />
+						Text output
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="outtype" value="dict" />
+						Wordlist as table
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="outtype" value="longdict" />
+						Wordlist
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="outtype" value="genall" />
+						All possible syllables
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<h4>Syllable settings</h4>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="showsyl" />
+						Show syllables
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="slowsyl" />
+						Slow syllable dropoff
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<h4>Dropoff</h4>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="dropoff" value="F" />
+						Fast
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="dropoff" value="M" checked />
+						Medium
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="dropoff" value="S" />
+						Slow
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="dropoff" value="L" />
+						Molasses
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="dropoff" value="E" />
+						Equiprobable
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<h4>Monosyllables</h4>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="monosyl" value="A" />
+						Always
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="monosyl" value="M" />
+						Mostly
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="monosyl" value="F" />
+						Frequent
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="monosyl" value="LF" checked />
+						Less frequent
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type ="radio" name="monosyl" value="R" />
+						Rare
+					</label>
+				</div>
+			</div>
+		</div>
+		
+		<div class="text-center">
+			<div class="btn-group">
+				<a class="btn btn-primary" role="button" onClick="process();">Generate</a>
+				<a class="btn btn-default hidden-xs" role="button" onClick="helpme();">Help me!</a>
+				<a class="btn btn-default hidden-xs" role="button" onClick="parsecat();">Parse cats</a>
+				<a class="btn btn-default hidden-xs" role="button" onClick="intocat();">Back to cats</a>
+				<a class="btn btn-default hidden-xs" role="button" onClick="showipa();">IPA</a>
+				<a class="btn btn-default hidden-xs" role="button" onClick="defaultme();">Defaults</a>
+				<div class="btn-group">
+  					<button type="button" class="btn btn-default dropdown-toggle visible-xs-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a role="button" onClick="helpme();">Help me!</a></li>
+						<li><a role="button" onClick="parsecat();">Parse cats</a></li>
+						<li><a role="button" onClick="intocat();">Back to cats</a></li>
+						<li><a role="button" onClick="showipa();">IPA</a></li>
+						<li><a role="button" onClick="defaultme();">Defaults</a></li>
+  					</ul>
+				</div>
+				<a class="btn btn-danger" role="button" onClick="erase();">Clear output</a>
+			</div>
+		</div>
+
+		<h3>Output</h3>
+		<div id="mytext"></div>
+	</form>
+
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/script.js"></script>
+</body>
+</html>
