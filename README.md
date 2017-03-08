@@ -13,11 +13,11 @@ The most up-to-date version can be found on my github.io page (direct link [here
 I plan on adding additional features to the app, like a better "how to" dialog, different functions for buttons, and contextual help messages.
 
  - **Added in v2017.2:** Different (hopefully better) "how to" dialog.
- - Contextual help messages.
+ - ~~Contextual help messages.~~
  - **Added in v2017.2:** More colors.
- - **Added in v2017.2:** ~~Brief description on the page.~~ instead, in the help window.
+ - **Added in v2017.2:** ~~Brief description on the page~~ instead, in the help window.
  - Better position for the output on smaller screens.
- - Save/Load functionality (either through a dialog or localStorage).
+ - **Added in v2017.3:** Save/Load functionality (~~either~~ through ~~a dialog or~~ localStorage).
  
 ## Before and after screenshots
 
