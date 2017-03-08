@@ -397,7 +397,6 @@ function clearAll()
 {
 	if (confirm("Are you sure you want to clear the Categories, Rewrite rules, and Syllable types? It cannot be reversed!"))
 	{
-		console.log("log 'o' shit");
 		var cats = document.querySelector("#cats");
 		var rewrite = document.querySelector("#rewrite")
 		var syls = document.querySelector("#syls")
@@ -502,4 +501,37 @@ function defaultme()
 		theform.rewrite.value = "ki|či";
 	}
 
+}
+
+function saveToJSON()
+{
+	var jsonData = new Object();
+	jsonData.cats = document.querySelector("#cats").value;
+	jsonData.rules = document.querySelector("#rewrite").value;
+	jsonData.syls = document.querySelector("#syls").value;
+
+	var jsonString = JSON.stringify(jsonData);
+
+	if (localStorage.getItem("ConlangTextGen-Data") == null)
+	{
+		localStorage.setItem("ConlangTextGen-Data", jsonString);
+	}
+	else
+	{
+		if (confirm("There is already saved data in your storage. Are you sure you want to replace it?\n\nThis action cannot be reversed."))
+		{
+			localStorage.setItem("ConlangTextGen-Data", jsonString);
+		}
+	}
+}
+
+loadFromJSON();
+
+function loadFromJSON()
+{
+	var jsonData = new Object();
+	jsonData = JSON.parse(localStorage.getItem("ConlangTextGen-Data"));
+	document.querySelector("#cats").value = jsonData.cats;
+	document.querySelector("#rewrite").value = jsonData.rules;
+	document.querySelector("#syls").value = jsonData.syls;
 }

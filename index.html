@@ -19,19 +19,19 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="cats">Categories</label>
-					<textarea class="form-control" id="cats" name="cats" rows="7">C=ptkbdg&#13;&#10;R=rl&#13;&#10;V=ieaou</textarea>
+					<textarea class="form-control" id="cats" name="cats" rows="7"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="rewrite">Rewrite rules</label>
-					<textarea class="form-control" id="rewrite" name="rewrite" rows="7">ki|&#x010d;i</textarea>
+					<textarea class="form-control" id="rewrite" name="rewrite" rows="7"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="syls">Syllable types</label>
-					<textarea class="form-control" id="syls" name="syls" rows="7">CV&#13;&#10;V&#13;&#10;CRV</textarea>
+					<textarea class="form-control" id="syls" name="syls" rows="7"></textarea>
 				</div>
 			</div>
 		</div>
@@ -162,12 +162,16 @@
 					</ul>
 				</div>
 				<a class="btn btn-default hidden-xs" role="button" data-toggle="modal" data-target="#ipaModal">IPA</a>
+				<a class="btn btn-default hidden-xs" role="button" onClick="saveToJSON();" data-toggle="tooltip" title="Will be reloaded automatically">Save</a>
+				<a class="btn btn-default hidden-xs" role="button" onClick="loadFromJSON();">Load</a>
 				<a class="btn btn-default hidden-xs" role="button" onClick="defaultme();">Cycle presets</a>
 				<div class="btn-group">
   					<button type="button" class="btn btn-default dropdown-toggle visible-xs-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
 						<li><a role="button" data-toggle="modal" data-target="#ipaModal">IPA</a></li>
+						<li><a role="button" onClick="saveToJSON();">Save</a></li>
+						<li><a role="button" onClick="loadFromJSON();">Load</a></li>
 						<li><a role="button" onClick="defaultme();">Cycle presets</a></li>
   					</ul>
 				</div>
@@ -188,8 +192,13 @@
 					<h3 class="modal-title" id="myModalLabel">About</h3>
 				</div>
 				<div class="modal-body">
-					<p>I’ve long advocated either hand-crafting every word, or using the <a href="http://www.zompist.com/sounds.htm">Sound Change Applier</a> to derive families. But inspiration does flag, and sometimes you want to use a vocabulary generator.</p>
-					<p>The usual problem with these is that they make all the possibilities equiprobable, which is highly unnaturalistic. So I’ve created a generator called <a href="http://www.zompist.com/gen.html">gen</a>, which applies a cheap power law, so the first choice is chosen most often, and so on down, smoothly, to the last choice which get chosen the least.</p>
+					<blockquote>
+						<p>I’ve long advocated either hand-crafting every word, or using the <a href="http://www.zompist.com/sounds.htm">Sound Change Applier</a> to derive families. But inspiration does flag, and sometimes you want to use a vocabulary generator.</p>
+						<p>The usual problem with these is that they make all the possibilities equiprobable, which is highly unnaturalistic. So I’ve created a generator called <a href="http://www.zompist.com/gen.html">gen</a>, which applies a cheap power law, so the first choice is chosen most often, and so on down, smoothly, to the last choice which get chosen the least.</p>
+						<footer>
+							Mark Rosenfelder
+						</footer>
+					</blockquote>
 					<h3>Example</h3>
 					<p>With the default settings, you’ll get a pseudo-text, like this:</p>
 					<blockquote><p>Tapi opii piiai kledri pripaipu ota dopiči. Pluda detutra i uebopo giplao bi tra itra. Ii aedu baebu brobie tiglea brobo. Kaba do paepibe čipiduka igapri pripe. I di o etu epei e. Pe ibrapa io pebibri ti. Pai be klečii klu priple edi. Itekla pu pi uake preegi pipipii? Aketleii kakliokre ebao tiči opieti ebi utrii tii? Tepi pepi piipetrete gea čipu tripidipu? Itika poa be. A piiba i tiidie pleba tipači. Ei pibo giotoe tekebiblopi čii ti budetru pipudode? Apii kuke tepi kebi plečitrebri.</p></blockquote>
@@ -198,7 +207,7 @@
 						<dt>Output type</dt>
 						<dd>Tells whether you want pseudo-text, or a table of a hundred words. Pseudo-text is better for seeing what your language looks like, given the phonology and syllable types you’ve defined. Once you’re happy with the look and feel of the language, the word list is better for actually generating vocabulary.</dd>
 						<dt>All possible syllables</dt>
-						<dd>Output a list of all possible syllables. This option <strong>ignores the Dropoff and Monosyllables controls</strong>: it is not random at all, and it shows only single syllables.</dd>
+						<dd>Output a list of all possible syllables. <strong>This option ignores the Dropoff and Monosyllables controls</strong>: it is not random at all, and it shows only single syllables.</dd>
 						<dt>Show syllables</dt>
 						<dd>Displays a dot between syllables in the output. A syllable is whatever you put in <em>Syllable types</em>.</dd>
 						<dt>Dropoff</dt>
@@ -231,10 +240,10 @@
 				<div class="modal-body">
 					<p>These are your phonological classes, defined by enumeration. The format is exactly the same as used by the <a href="http://www.zompist.com/sounds.htm">Sound Change Applier</a>. For instance, I might define my fricatives like this:</p>
 					<pre>F=fvszšž</pre>
-					<p>That means that any time gen wants to output an F from the syllables list, it will randomly pick one of <code>f</code>, <code>v</code>, <code>s</code>, <code>z</code>, <code>š</code>, <code>ž</code>. As you can see, you can use Unicode! The phonemes in a category have to be single characters, but we’ll see how to output digraphs below.</p>
+					<p>That means that any time gen wants to output an <code>F</code> from the syllables list, it will randomly pick one of <code>f</code>, <code>v</code>, <code>s</code>, <code>z</code>, <code>š</code>, <code>ž</code>. As you can see, you can use Unicode! The phonemes in a category have to be single characters, but you can output digraphs using Rewrite rules.</p>
 					<p>The key thing to grasp is that the <strong>order determines the probability.</strong> The program runs through the phonemes in a category, with a 30% chance of stopping<sup>see below</sup> at each one. So the <code>F</code> definition above says that we want <code>f</code> to occur a lot and <code>ž</code> not that much.</p>
 					<p><small>That is, 30% for the recommended Medium dropoff. It’s 45% for <em>Fast</em> and 15% for <em>Slow</em>. Also, for computation speed, if it gets to the end of the choices it starts over.</small></p>
-					<p>The main corollary: Put the sounds you like first! Don’t list them in place of articulation order unless you really like labials. Try varying the order and hitting Generate to see how changing the order changes the output. Don’t overdo the classes - gen doesn’t know any phonology, and will be perfectly happy with a single class C for all consonants. You define a class for two reasons:</p>
+					<p>The main corollary: Put the sounds you like first! Don’t list them in place of articulation order unless you really like labials. Try varying the order and hitting Generate to see how changing the order changes the output. Don’t overdo the classes - gen doesn’t know any phonology, and will be perfectly happy with a single class <code>C</code> for all consonants. You define a class for two reasons:</p>
 					<ul>
 						<li>To control probabilities. For example we usually want stops to occur more than fricatives.</li>
 						<li>To enforce phonotactics. For example if the only initial clusters you allow are stop + liquid, then you need classes for stops and liquids.</li>
@@ -257,7 +266,7 @@
 				<div class="modal-body">
 					<p>These allow you to apply global substitutions to the output. The simplest form is to replace a single character:</p>
 					<pre>θ|th</pre>
-					<p>That tells gen to replace every occurence of <code>θ</code> in the output with <code>th</code>.</p>
+					<p>That tells the program to replace every occurence of <code>θ</code> in the output with <code>th</code>.</p>
 					<p>Or you can handle combinations. For example maybe <code>ti</code> always changes to <code>či</code>. You'd write that as <code>ti|či</code>. The facility is actually even more powerful than that, because the left-hand side is a regular expression. So for instance you could change both <code>br</code> and <code>bl</code> to <code>bj</code> with the formula <code>b[rl]|bj.</code></p>
 					<p>Rules are applied in order. Make sure they don’t feed into each other when they shouldn’t (see the <a href="http://www.zompist.com/genhelp.html#japan">Japanese example here</a> for more on this). For fancier changes (such as those that are sensitive to the following phonemes), use the <a href="http://www.zompist.com/sounds.htm">Sound Change Applier</a>.</p>
 					<p>You don’t have to have any rewrite rules at all, of course (the other inputs have to have something in them).</p>
@@ -301,7 +310,7 @@
 				</div>
 				<div class="modal-body">
 					<p><strong>Open these in a new tab</strong> then copy and paste the IPA symbols into the <em>Categories</em> box.</p>
-					<p>You must use only <strong>single characters</strong>, i.e. <code>ts</code> and <code>q͡ʡ</code> is not legal, but <code>ʎ̝</code> and <code>ɲ̊</code> is.</p>
+					<p>Any single character is valid, </strong>, i.e. <code>ts</code> and <code>q͡ʡ</code> is not legal, but <code>ʎ̝</code> and <code>ɲ̊</code> is.</p>
 					<a class="btn btn-lg btn-default btn-block" role="button" href="https://en.wikipedia.org/wiki/Template:IPA_chart/table_vowels">IPA vowel table</a>
 					<a class="btn btn-lg btn-default btn-block" role="button" href="https://en.wikipedia.org/wiki/Template:IPA_consonant_chart">IPA consonant table</a>
 				</div>
@@ -313,7 +322,7 @@
 	</div>
 
 	<script src="js/jquery-3.1.1.min.js"></script>
-	<!--<script src="js/bootstrap-init.js"></script>-->
+	<script src="js/bootstrap-init.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/script.js"></script>
 </body>
