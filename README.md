@@ -6,6 +6,7 @@ Changed the look and feel of Mark Rosenfelder's awesome language text generator 
 The most up-to-date version can be found on my github.io page (direct link [here](https://bodzaital.github.io/conlang/)). Older versions are listed below, and kept for (mainly my own) legacy reasons.
 
 ## Changelog
+ - v2017.3: Added save/loading, and some minor features and enhancements.
  - v2017.2: See full changelog [at the releases tab](https://github.com/bodzaital/conlang-text-gen/releases/tag/v2017.2).
  - v2017.1: Changed look and feel. The app uses bootstrap, and has a responsive layout that works on mobiles and desktops. No extra functionality added. This release aimed to port every part of the original to a more modern interface.
  
