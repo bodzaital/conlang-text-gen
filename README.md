@@ -7,16 +7,17 @@ The most up-to-date version can be found on my github.io page (direct link [here
 
 ## Changelog
  - v2017.2: See full changelog [at the releases tab](https://github.com/bodzaital/conlang-text-gen/releases/tag/v2017.2).
- - [v2017.1](https://bodzaital.github.io/conlang/): Changed look and feel. The app uses bootstrap, and has a responsive layout that works on mobiles and desktops. No extra functionality added. This release aimed to port every part of the original to a more modern interface.
+ - v2017.1: Changed look and feel. The app uses bootstrap, and has a responsive layout that works on mobiles and desktops. No extra functionality added. This release aimed to port every part of the original to a more modern interface.
  
 ## Roadmap
 I plan on adding additional features to the app, like a better "how to" dialog, different functions for buttons, and contextual help messages.
 
- - ~~Different (hopefully better) "how to" dialog.~~
+ - **Added in v2017.2:** Different (hopefully better) "how to" dialog.
  - Contextual help messages.
- - ~~More colors.~~
- - ~~Brief description on the page.~~ It's in the Help/About modal window.
+ - **Added in v2017.2:** More colors.
+ - **Added in v2017.2:** ~~Brief description on the page.~~ instead, in the help window.
  - Better position for the output on smaller screens.
+ - Save/Load functionality (either through a dialog or localStorage).
  
 ## Before and after screenshots
 
