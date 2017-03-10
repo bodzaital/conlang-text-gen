@@ -40,25 +40,25 @@
 				<h4>Output type</h4>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="outtype" value="text" checked />
+						<input id="outType-contText" type ="radio" name="outtype" value="text" checked />
 						Continuous text
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="outtype" value="dict" />
+						<input id="outType-table" type ="radio" name="outtype" value="dict" />
 						10-by-15 Wordlist (as table)
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="outtype" value="longdict" />
+						<input id="outType-wordlist" type ="radio" name="outtype" value="longdict" />
 						Wordlist
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="outtype" value="genall" />
+						<input id="outType-all" type ="radio" name="outtype" value="genall" />
 						All possible syllables
 					</label>
 				</div>
@@ -67,13 +67,13 @@
 				<h4>Syllable settings</h4>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="showsyl" />
+						<input id="syls-show" type="checkbox" name="showsyl" />
 						Show syllables
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="slowsyl" />
+						<input id="syls-slow" type="checkbox" name="slowsyl" />
 						Slow syllable dropoff
 					</label>
 				</div>
@@ -82,31 +82,31 @@
 				<h4>Dropoff</h4>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="dropoff" value="F" />
+						<input id="dropoff-fast" type ="radio" name="dropoff" value="F" />
 						Fast
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="dropoff" value="M" checked />
+						<input id="dropoff-medium" type ="radio" name="dropoff" value="M" checked />
 						Medium
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="dropoff" value="S" />
+						<input id="dropoff-slow" type ="radio" name="dropoff" value="S" />
 						Slow
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="dropoff" value="L" />
+						<input id="dropoff-molasses" type ="radio" name="dropoff" value="L" />
 						Molasses
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="dropoff" value="E" />
+						<input id="dropoff-eq" type ="radio" name="dropoff" value="E" />
 						Equiprobable
 					</label>
 				</div>
@@ -115,68 +115,74 @@
 				<h4>Monosyllables</h4>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="monosyl" value="A" />
+						<input id="monosyl-always" type="radio" name="monosyl" value="A" />
 						Always
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="monosyl" value="M" />
+						<input id="monosyl-mostly" type="radio" name="monosyl" value="M" />
 						Mostly
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="monosyl" value="F" />
+						<input id="monosyl-freq" type="radio" name="monosyl" value="F" />
 						Frequent
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="monosyl" value="LF" checked />
+						<input id="monosyl-less" type="radio" name="monosyl" value="LF" checked />
 						Less frequent
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type ="radio" name="monosyl" value="R" />
+						<input id="monosyl-rare" type="radio" name="monosyl" value="R" />
 						Rare
 					</label>
 				</div>
 			</div>
 		</div>
 		
-		<div class="text-center">
-			<div class="btn-group">
-				<a class="btn btn-primary" role="button" onClick="process();">Generate</a>
+		<div id="controls" class="row">
+			<div id="load-message" class="alert alert-info alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" onclick="neuterOpenStyle();">&times;</span></button>
+				<strong>Save file present!</strong> You have settings saved in your browser's local storage. If you want to see it, click Open. Or you can <a href="#" class="alert-link" onclick="deleteJSON();">delete</a> it if you want.
+			</div>
+			<div id="btn-options-panel" class="text-center">
 				<div class="btn-group">
-					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#generalHelp">Help me!</button>
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="caret"></span>
-						<span class="sr-only">Toggle Dropdown</span>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a role="button" data-toggle="modal" data-target="#categoriesModal">Categories</a></li>
-						<li><a role="button" data-toggle="modal" data-target="#rewriteModal">Rewrite rules</a></li>
-						<li><a role="button" data-toggle="modal" data-target="#syllableModal">Syllable types</a></li>
-					</ul>
+					<a class="btn btn-primary" role="button" onClick="process();">Generate</a>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#generalHelp">Help me!</button>
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="caret"></span>
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a role="button" data-toggle="modal" data-target="#categoriesModal">Categories</a></li>
+							<li><a role="button" data-toggle="modal" data-target="#rewriteModal">Rewrite rules</a></li>
+							<li><a role="button" data-toggle="modal" data-target="#syllableModal">Syllable types</a></li>
+						</ul>
+					</div>
+					<a class="btn btn-default hidden-xs" role="button" data-toggle="modal" data-target="#ipaModal">IPA</a>
+					<a class="btn btn-default hidden-xs" id="btn-save" role="button" onClick="saveToJSON();">Save</a>
+					<a class="btn btn-warning hidden-xs" id="btn-open" role="button" onClick="loadFromJSON();">Open</a>
+					<a class="btn btn-default hidden-xs" role="button" onClick="defaultme();">Cycle presets</a>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle visible-xs-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a role="button" data-toggle="modal" data-target="#ipaModal">IPA</a></li>
+							<li><a role="button" onClick="saveToJSON();">Save</a></li>
+							<li><a id="btn-open" class="btn btn-warning" role="button" onClick="loadFromJSON();">Open</a></li>
+							<li><a role="button" onClick="defaultme();">Cycle presets</a></li>
+						</ul>
+					</div>
+					<a class="btn btn-default" role="button" onClick="erase();">Clear output</a>
+					<a class="btn btn-danger" role="button" onClick="clearAll();">Clear all</a>
 				</div>
-				<a class="btn btn-default hidden-xs" role="button" data-toggle="modal" data-target="#ipaModal">IPA</a>
-				<a class="btn btn-default hidden-xs" role="button" onClick="saveToJSON();" data-toggle="tooltip" title="Will be reloaded automatically">Save</a>
-				<a class="btn btn-default hidden-xs" role="button" onClick="loadFromJSON();">Load</a>
-				<a class="btn btn-default hidden-xs" role="button" onClick="defaultme();">Cycle presets</a>
-				<div class="btn-group">
-  					<button type="button" class="btn btn-default dropdown-toggle visible-xs-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a role="button" data-toggle="modal" data-target="#ipaModal">IPA</a></li>
-						<li><a role="button" onClick="saveToJSON();">Save</a></li>
-						<li><a role="button" onClick="loadFromJSON();">Load</a></li>
-						<li><a role="button" onClick="defaultme();">Cycle presets</a></li>
-  					</ul>
-				</div>
-				<a class="btn btn-default" role="button" onClick="erase();">Clear output</a>
-				<a class="btn btn-danger" role="button" onClick="clearAll();">Clear all</a>
 			</div>
 		</div>
 

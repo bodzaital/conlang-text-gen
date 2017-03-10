@@ -510,6 +510,92 @@ function saveToJSON()
 	jsonData.rules = document.querySelector("#rewrite").value;
 	jsonData.syls = document.querySelector("#syls").value;
 
+	var contText, table, wordlist, all;
+	contText = document.querySelector("#outType-contText").checked;
+	table = document.querySelector("#outType-table").checked;
+	wordlist = document.querySelector("#outType-wordlist").checked;
+	all = document.querySelector("#outType-all").checked;
+
+	if (contText)
+	{
+		jsonData.outType = "contText";
+	}
+	else if (table)
+	{
+		jsonData.outType = "table";
+	}
+	else if (wordlist)
+	{
+		jsonData.outType = "wordlist";
+	}
+	else
+	{
+		jsonData.outType = "all";
+	}
+
+	var show, slow;
+	show = document.querySelector("#syls-show").checked;
+	slow = document.querySelector("#syls-slow").checked;
+
+	jsonData.show = show;
+	jsonData.slow = slow;
+
+	var fast, medium, slow2, molasses, eq;
+	fast = document.querySelector("#dropoff-fast").checked;
+	medium = document.querySelector("#dropoff-medium").checked;
+	slow2 = document.querySelector("#dropoff-slow").checked;
+	molasses = document.querySelector("#dropoff-molasses").checked;
+	eq = document.querySelector("#dropoff-eq").checked;
+
+	if (fast)
+	{
+		jsonData.dropoff = "fast";
+	}
+	else if (medium)
+	{
+		jsonData.dropoff = "medium";
+	}
+	else if (slow2)
+	{
+		jsonData.dropoff = "slow";
+	}
+	else if (molasses)
+	{
+		jsonData.dropoff = "molasses";
+	}
+	else
+	{
+		jsonData.dropoff = "eq";
+	}
+
+	var always, mostly, freq, less, rare;
+	always = document.querySelector("#monosyl-always").checked;
+	mostly = document.querySelector("#monosyl-mostly").checked;
+	freq = document.querySelector("#monosyl-freq").checked;
+	less = document.querySelector("#monosyl-less").checked;
+	rare = document.querySelector("#monosyl-rare").checked;
+
+	if (always)
+	{
+		jsonData.monosyl = "always";
+	}
+	else if (mostly)
+	{
+		jsonData.monosyl = "mostly";
+	}
+	else if (freq)
+	{
+		jsonData.monosyl = "less";
+	}
+	else if (less)
+	{
+		jsonData.monosyl = "less";
+	}
+	else
+	{
+		jsonData.monosyl = "rare";
+	}
+
 	var jsonString = JSON.stringify(jsonData);
 
 	if (localStorage.getItem("ConlangTextGen-Data") == null)
@@ -523,15 +609,156 @@ function saveToJSON()
 			localStorage.setItem("ConlangTextGen-Data", jsonString);
 		}
 	}
-}
 
-loadFromJSON();
+	hideConfirmation();
+}
 
 function loadFromJSON()
 {
-	var jsonData = new Object();
-	jsonData = JSON.parse(localStorage.getItem("ConlangTextGen-Data"));
-	document.querySelector("#cats").value = jsonData.cats;
-	document.querySelector("#rewrite").value = jsonData.rules;
-	document.querySelector("#syls").value = jsonData.syls;
+	console.log("ayy");
+
+	if (localStorage.getItem("ConlangTextGen-Data") != null)
+	{
+		var jsonData = new Object();
+		jsonData = JSON.parse(localStorage.getItem("ConlangTextGen-Data"));
+		document.querySelector("#cats").value = jsonData.cats;
+		document.querySelector("#rewrite").value = jsonData.rules;
+		document.querySelector("#syls").value = jsonData.syls;
+
+		var contText, table, wordlist, all;
+		contText = document.querySelector("#outType-contText");
+		table = document.querySelector("#outType-table");
+		wordlist = document.querySelector("#outType-wordlist");
+		all = document.querySelector("#outType-all");
+
+		if (jsonData.outType == "contText")
+		{
+			contText.checked = true;
+		}
+		else if (jsonData.outType == "table")
+		{
+			table.checked = true;
+		}
+		else if (jsonData.outType == "wordlist")
+		{
+			wordlist.checked = true;
+		}
+		else
+		{
+			all.checked = true;
+		}
+
+		var show, slow;
+		show = document.querySelector("#syls-show");
+		slow = document.querySelector("#syls-slow");
+
+		if (jsonData.show)
+		{
+			show.checked = true;
+		}
+
+		if (jsonData.slow)
+		{
+			slow.checked = slow;
+		}
+
+		if (jsonData.dropoff == "fast")
+		{
+			document.querySelector("#dropoff-fast").checked = true;
+		}
+		else if (jsonData.dropoff == "medium")
+		{
+			document.querySelector("#dropoff-medium").checked = true;
+		}
+		else if (jsonData.dropoff == "slow")
+		{
+			document.querySelector("#dropoff-slow").checked = true;
+		}
+		else if (jsonData.dropoff == "molasses")
+		{
+			document.querySelector("#dropoff-molasses").checked = true;
+		}
+		else
+		{
+			document.querySelector("#dropoff-eq").checked = true;
+		}
+
+		if (jsonData.monosyl == "always")
+		{
+			document.querySelector("#monosyl-always").checked = true;
+		}
+		else if (jsonData.monosyl == "mostly")
+		{
+			document.querySelector("#monosyl-mostly").checked = true;
+		}
+		else if (jsonData.monosyl == "less")
+		{
+			document.querySelector("#monosyl-freq").checked = true;
+		}
+		else if (jsonData.monosyl == "less")
+		{
+			document.querySelector("#monosyl-less").checked = true;
+		}
+		else
+		{
+			document.querySelector("#monosyl-rare").checked = true;
+		}
+
+		saveConfirmation("<strong>Opened.</strong> The settings were successfully opened.");
+
+		neuterOpenStyle();
+	}
+}
+
+displayLoadMessage();
+
+function displayLoadMessage()
+{
+	if (localStorage.getItem("ConlangTextGen-Data") == null)
+	{
+		neuterOpenStyle();
+	}
+}
+
+function deleteJSON()
+{
+	if (confirm("Are you sure you want to delete your save file?\n\nThis cannot be reversed."))
+	{
+		localStorage.removeItem("ConlangTextGen-Data");
+		neuterOpenStyle();
+	}
+}
+
+function neuterOpenStyle()
+{
+	if (document.querySelector("#load-message") != null)
+	{
+		document.querySelector("#controls").removeChild(document.querySelector("#load-message"));
+		document.querySelector("#btn-open").className = "btn btn-default";
+	}
+}
+
+function hideConfirmation()
+{
+	saveConfirmation("<strong>Saved.</strong> The settings were saved successfully.")
+}
+
+function saveConfirmation(textHTML)
+{
+	var newAlert = document.createElement("div");
+	newAlert.innerHTML = textHTML;
+
+	newAlert.className = "alert alert-info alert-dismissible flash";
+	newAlert.id = "saveConfirmation";
+
+	var before = document.querySelector("#btn-options-panel");
+	var parent = document.querySelector("#controls");
+
+	parent.insertBefore(newAlert, before);
+
+	window.setTimeout(function() {
+	$(".flash").fadeTo(500, 0).slideUp(500, function(){
+		$(this).remove();
+	});
+	}, 3000);
 }
