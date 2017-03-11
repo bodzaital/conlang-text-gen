@@ -615,8 +615,6 @@ function saveToJSON()
 
 function loadFromJSON()
 {
-	console.log("ayy");
-
 	if (localStorage.getItem("ConlangTextGen-Data") != null)
 	{
 		var jsonData = new Object();
@@ -706,7 +704,7 @@ function loadFromJSON()
 
 		saveConfirmation("<strong>Opened.</strong> The settings were successfully opened.");
 
-		neuterOpenStyle();
+		neuterOpenStyle(true);
 	}
 }
 
@@ -716,7 +714,7 @@ function displayLoadMessage()
 {
 	if (localStorage.getItem("ConlangTextGen-Data") == null)
 	{
-		neuterOpenStyle();
+		neuterOpenStyle(false);
 	}
 }
 
@@ -725,15 +723,26 @@ function deleteJSON()
 	if (confirm("Are you sure you want to delete your save file?\n\nThis cannot be reversed."))
 	{
 		localStorage.removeItem("ConlangTextGen-Data");
-		neuterOpenStyle();
+		neuterOpenStyle(true);
 	}
 }
 
-function neuterOpenStyle()
+function neuterOpenStyle(animate)
 {
 	if (document.querySelector("#load-message") != null)
 	{
-		document.querySelector("#controls").removeChild(document.querySelector("#load-message"));
+		if (animate)
+		{
+			$(".flash-loadmsg").fadeTo(500, 0).slideUp(500, function()
+			{
+				$(this).remove();
+				console.log("log o shit");
+			});
+		}
+		else
+		{
+			document.querySelector("#controls").removeChild(document.querySelector("#load-message"));
+		}
 		document.querySelector("#btn-open").className = "btn btn-default";
 	}
 }

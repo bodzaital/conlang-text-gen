@@ -147,8 +147,8 @@
 		</div>
 		
 		<div id="controls" class="row">
-			<div id="load-message" class="alert alert-info alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" onclick="neuterOpenStyle();">&times;</span></button>
+			<div id="load-message" class="alert alert-info alert-dismissible flash-loadmsg" role="alert">
+				<button type="button" class="close" aria-label="Close" onclick="neuterOpenStyle(true);"><span aria-hidden="true">&times;</span></button>
 				<strong>Save file present!</strong> You have settings saved in your browser's local storage. If you want to see it, click Open. Or you can <a href="#" class="alert-link" onclick="deleteJSON();">delete</a> it if you want.
 			</div>
 			<div id="btn-options-panel" class="text-center">
@@ -166,20 +166,10 @@
 							<li><a role="button" data-toggle="modal" data-target="#syllableModal">Syllable types</a></li>
 						</ul>
 					</div>
-					<a class="btn btn-default hidden-xs" role="button" data-toggle="modal" data-target="#ipaModal">IPA</a>
-					<a class="btn btn-default hidden-xs" id="btn-save" role="button" onClick="saveToJSON();">Save</a>
-					<a class="btn btn-warning hidden-xs" id="btn-open" role="button" onClick="loadFromJSON();">Open</a>
-					<a class="btn btn-default hidden-xs" role="button" onClick="defaultme();">Cycle presets</a>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle visible-xs-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a role="button" data-toggle="modal" data-target="#ipaModal">IPA</a></li>
-							<li><a role="button" onClick="saveToJSON();">Save</a></li>
-							<li><a id="btn-open" class="btn btn-warning" role="button" onClick="loadFromJSON();">Open</a></li>
-							<li><a role="button" onClick="defaultme();">Cycle presets</a></li>
-						</ul>
-					</div>
+					<a class="btn btn-default" role="button" data-toggle="modal" data-target="#ipaModal">IPA</a>
+					<a class="btn btn-default" id="btn-save" role="button" onClick="saveToJSON();">Save</a>
+					<a class="btn btn-warning" id="btn-open" role="button" onClick="loadFromJSON();">Open</a>
+					<a class="btn btn-default" role="button" onClick="defaultme();">Cycle presets</a>
 					<a class="btn btn-default" role="button" onClick="erase();">Clear output</a>
 					<a class="btn btn-danger" role="button" onClick="clearAll();">Clear all</a>
 				</div>
