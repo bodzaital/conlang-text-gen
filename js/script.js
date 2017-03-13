@@ -101,7 +101,6 @@ function rewriterules() {
 	}
 }
 
-
 // Apply rewrite rules on just one string 
 function rewriterulesStr(s) {
 
@@ -360,12 +359,18 @@ function process()
 	// Error checking
 	if (ncat <= 0 || nsyl <= 0) {
 		ss = '<div class="alert alert-danger" role="alert"><strong>Error!</strong> You must have both categories and syllables to generate text.</div>';
+		document.querySelector("#div-cats").classList += " has-error";
+		document.querySelector("#div-syls").classList += " has-error";
 	} else if (badcats) {
 		ss = '<div class="alert alert-danger" role="alert"><strong>Error!</strong> Categories must be in the form of <code>V=aeiou</code>. That is, a single letter, an equal sign, then a list of possible expansions.</div';
+		document.querySelector("#div-cats").classList += " has-error";
 	} else if (theform.syls.value == "") {
 		ss = '<div class="alert alert-danger" role="alert"><strong>Error!</strong> There must be at least one syllable type.</div>';
+		document.querySelector("#div-syls").classList += " has-error";
 	} else {
 		// Actually generate text
+		document.querySelector("#div-cats").classList.remove("has-error");
+		document.querySelector("#div-syls").classList.remove("has-error");
 
 		if (isText ) {
 			CreateText();
@@ -388,14 +393,9 @@ function erase()
 	document.getElementById("mytext").innerHTML = "";
 }
 
-function helpme() 
-{
-	window.open("genhelp.html"); 
-}
-
 function clearAll()
 {
-	if (confirm("Are you sure you want to clear the Categories, Rewrite rules, and Syllable types? It cannot be reversed!"))
+	if (confirm("Are you sure you want to clear the Categories, Rewrite rules, and Syllable types?\n\nThis action cannot be reversed!"))
 	{
 		var cats = document.querySelector("#cats");
 		var rewrite = document.querySelector("#rewrite")
@@ -404,67 +404,9 @@ function clearAll()
 		rewrite.value = "";
 		syls.value = "";
 		erase();
+
+		infoAlertMessage("clrAll");
 	}
-}
-
-// Parse the Cat field into the three input fields
-function parsecat() 
-{
-	var theform = document.theform;
-	cat = theform.cats.value.split("\n");
-	ncat = cat.length;
-	
-	var osyl= "";
-	var orew = "";
-	var ocat = "";
-
-	for (w = 0; w < ncat; w++) {
-		var t = cat[w];
-		if (find(t, "|") != -1) 
-			orew += t + "\n";
-		else if (find(t, "=") != -1) 
-			ocat += t + "\n";
-		else 
-			osyl += t + "\n";
-	}
-
-	if (osyl == "" && theform.syls.value != "") {
-		alert("No syllable types were found in the categories box, and you have content in the syllable types box.  You probably don't want to do a Parse then.");
-		return;
-	}
-	if (orew == "" && theform.rewrite.value != "") {
-		alert("No rewrite rules were found in the categories box, and you have content in the rewrite rules box.  You probably don't want to do a Parse then.");
-		return;
-	}
-
-	theform.cats.value = ocat;
-	theform.rewrite.value = orew;
-	theform.syls.value = osyl;
-}
-
-// Copy all three input fields back into the SC area
-function intocat()
-{
-	var theform = document.theform;
-
-	theform.cats.value =
-		theform.cats.value + "\n" + 
-		theform.rewrite.value + "\n" + 
-		theform.syls.value + "\n";
-}
-
-// Display the IPA
-function showipa()
-{
-	s = "<font face='Gentium'>&#x00b2; &#x2023; &#x2026; ";
-	for (var i = 0x0250; i <= 0x02af; i++) {
-		s += String.fromCharCode(i) + " ";
-	}
-	for (var i = 0x00c0; i <= 0x0237; i++) {
-		s += String.fromCharCode(i) + " ";
-	}
-	s += "</font>";
-	document.getElementById("mytext").innerHTML = s;
 }
 
 // Defaults
@@ -510,28 +452,297 @@ function saveToJSON()
 	jsonData.rules = document.querySelector("#rewrite").value;
 	jsonData.syls = document.querySelector("#syls").value;
 
-	var jsonString = JSON.stringify(jsonData);
+	var contText, table, wordlist, all;
+	contText = document.querySelector("#outType-contText").checked;
+	table = document.querySelector("#outType-table").checked;
+	wordlist = document.querySelector("#outType-wordlist").checked;
+	all = document.querySelector("#outType-all").checked;
 
-	if (localStorage.getItem("ConlangTextGen-Data") == null)
+	if (contText)
 	{
-		localStorage.setItem("ConlangTextGen-Data", jsonString);
+		jsonData.outType = "contText";
+	}
+	else if (table)
+	{
+		jsonData.outType = "table";
+	}
+	else if (wordlist)
+	{
+		jsonData.outType = "wordlist";
 	}
 	else
 	{
-		if (confirm("There is already saved data in your storage. Are you sure you want to replace it?\n\nThis action cannot be reversed."))
-		{
-			localStorage.setItem("ConlangTextGen-Data", jsonString);
-		}
+		jsonData.outType = "all";
 	}
-}
 
-loadFromJSON();
+	var show, slow;
+	show = document.querySelector("#syls-show").checked;
+	slow = document.querySelector("#syls-slow").checked;
+
+	jsonData.show = show;
+	jsonData.slow = slow;
+
+	var fast, medium, slow2, molasses, eq;
+	fast = document.querySelector("#dropoff-fast").checked;
+	medium = document.querySelector("#dropoff-medium").checked;
+	slow2 = document.querySelector("#dropoff-slow").checked;
+	molasses = document.querySelector("#dropoff-molasses").checked;
+	eq = document.querySelector("#dropoff-eq").checked;
+
+	if (fast)
+	{
+		jsonData.dropoff = "fast";
+	}
+	else if (medium)
+	{
+		jsonData.dropoff = "medium";
+	}
+	else if (slow2)
+	{
+		jsonData.dropoff = "slow";
+	}
+	else if (molasses)
+	{
+		jsonData.dropoff = "molasses";
+	}
+	else
+	{
+		jsonData.dropoff = "eq";
+	}
+
+	var always, mostly, freq, less, rare;
+	always = document.querySelector("#monosyl-always").checked;
+	mostly = document.querySelector("#monosyl-mostly").checked;
+	freq = document.querySelector("#monosyl-freq").checked;
+	less = document.querySelector("#monosyl-less").checked;
+	rare = document.querySelector("#monosyl-rare").checked;
+
+	if (always)
+	{
+		jsonData.monosyl = "always";
+	}
+	else if (mostly)
+	{
+		jsonData.monosyl = "mostly";
+	}
+	else if (freq)
+	{
+		jsonData.monosyl = "freq";
+	}
+	else if (less)
+	{
+		jsonData.monosyl = "less";
+	}
+	else
+	{
+		jsonData.monosyl = "rare";
+	}
+
+	var jsonString = JSON.stringify(jsonData, null, 4);
+
+	document.querySelector("#imex").innerHTML = jsonString;
+}
 
 function loadFromJSON()
 {
 	var jsonData = new Object();
-	jsonData = JSON.parse(localStorage.getItem("ConlangTextGen-Data"));
+	jsonData = JSON.parse(document.querySelector("#imex").value);
+
+	console.log(jsonData);
+
 	document.querySelector("#cats").value = jsonData.cats;
 	document.querySelector("#rewrite").value = jsonData.rules;
 	document.querySelector("#syls").value = jsonData.syls;
+
+	var contText, table, wordlist, all;
+	contText = document.querySelector("#outType-contText");
+	table = document.querySelector("#outType-table");
+	wordlist = document.querySelector("#outType-wordlist");
+	all = document.querySelector("#outType-all");
+
+	if (jsonData.outType == "contText")
+	{
+		contText.checked = true;
+	}
+	else if (jsonData.outType == "table")
+	{
+		table.checked = true;
+	}
+	else if (jsonData.outType == "wordlist")
+	{
+		wordlist.checked = true;
+	}
+	else
+	{
+		all.checked = true;
+	}
+
+	var show, slow;
+	show = document.querySelector("#syls-show");
+	slow = document.querySelector("#syls-slow");
+
+	if (jsonData.show)
+	{
+		show.checked = true;
+	}
+
+	if (jsonData.slow)
+	{
+		slow.checked = slow;
+	}
+
+	if (jsonData.dropoff == "fast")
+	{
+		document.querySelector("#dropoff-fast").checked = true;
+	}
+	else if (jsonData.dropoff == "medium")
+	{
+		document.querySelector("#dropoff-medium").checked = true;
+	}
+	else if (jsonData.dropoff == "slow")
+	{
+		document.querySelector("#dropoff-slow").checked = true;
+	}
+	else if (jsonData.dropoff == "molasses")
+	{
+		document.querySelector("#dropoff-molasses").checked = true;
+	}
+	else
+	{
+		document.querySelector("#dropoff-eq").checked = true;
+	}
+
+	if (jsonData.monosyl == "always")
+	{
+		document.querySelector("#monosyl-always").checked = true;
+	}
+	else if (jsonData.monosyl == "mostly")
+	{
+		document.querySelector("#monosyl-mostly").checked = true;
+	}
+	else if (jsonData.monosyl == "freq")
+	{
+		document.querySelector("#monosyl-freq").checked = true;
+	}
+	else if (jsonData.monosyl == "less")
+	{
+		document.querySelector("#monosyl-less").checked = true;
+	}
+	else
+	{
+		document.querySelector("#monosyl-rare").checked = true;
+	}
+
+	infoAlertMessage("opened");
 }
+
+function displayLoadMessage()
+{
+	if (localStorage.getItem("ConlangTextGen-Data") == null)
+	{
+		neuterOpenStyle(false);
+	}
+}
+
+function deleteJSON()
+{
+	if (confirm("Are you sure you want to delete your save file?\n\nThis cannot be reversed."))
+	{
+		localStorage.removeItem("ConlangTextGen-Data");
+		neuterOpenStyle(true);
+	}
+}
+
+function neuterOpenStyle(animate)
+{
+	if (document.querySelector("#load-message") != null)
+	{
+		if (animate)
+		{
+			$(".flash-loadmsg").fadeTo(500, 0).slideUp(500, function()
+			{
+				$(this).remove();
+			});
+		}
+		else
+		{
+			document.querySelector("#controls").removeChild(document.querySelector("#load-message"));
+		}
+		document.querySelector("#btn-open").className = "btn btn-default";
+	}
+}
+
+function infoAlertMessage(messagePreset)
+{
+	var newAlert = document.createElement("div");
+	var textHTML;
+
+	switch (messagePreset)
+	{
+		case "saved":
+			textHTML = "<strong>Saved.</strong> The settings were saved successfully.";
+			break;
+		case "opened":
+			textHTML = "<strong>Opened.</strong> The settings were successfully opened.";
+			break;
+		case "nodata":
+			textHTML = "<strong>No saved data.</strong> There is no saved data in your local storage.";
+			break;
+	}
+
+	newAlert.innerHTML = textHTML;
+
+	newAlert.className = "alert alert-info alert-dismissible flash";
+	newAlert.id = "infoAlertMessage";
+
+	var before = document.querySelector("#btn-options-panel");
+	var parent = document.querySelector("#controls");
+
+	parent.insertBefore(newAlert, before);
+
+	window.setTimeout(function() {
+	$(".flash").fadeTo(500, 0).slideUp(500, function(){
+		$(this).remove();
+	});
+	}, 3000);
+}
+
+var controlPanel = new Object();
+
+controlPanel.generate = document.querySelector("#btn-generate");
+controlPanel.export = document.querySelector("#btn-export");
+controlPanel.import = document.querySelector("#btn-import");
+controlPanel.cycle = document.querySelector("#btn-cycle");
+controlPanel.clrOut = document.querySelector("#btn-clrOut");
+controlPanel.clrAll = document.querySelector("#btn-clrAll");
+
+// Button clicking functions
+controlPanel.generate.addEventListener("click", function()
+{
+	process();
+});
+
+controlPanel.export.addEventListener("click", function()
+{
+	saveToJSON();
+});
+
+controlPanel.import.addEventListener("click", function()
+{
+	loadFromJSON();
+});
+
+controlPanel.cycle.addEventListener("click", function()
+{
+	defaultme();
+});
+
+controlPanel.clrOut.addEventListener("click", function()
+{
+	erase();
+});
+
+controlPanel.clrAll.addEventListener("click", function()
+{
+	clearAll();
+});
