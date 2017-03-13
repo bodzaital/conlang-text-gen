@@ -11,27 +11,27 @@
 <body class="container">
 	<div class="row">
 		<div class="col-sm-12 fancy-header">
-			<h1>Language Text Generator v2017.3</h1>
+			<h1>Language Text Generator v2017.4</h1>
 		</div>
 	</div>
 	<form name="theform">
 		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group">
-					<label for="cats">Categories</label>
+				<div id="div-cats" class="form-group">
+					<label class="control-label" for="cats">Categories</label>
 					<textarea class="form-control" id="cats" name="cats" rows="7"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group">
-					<label for="rewrite">Rewrite rules</label>
-					<textarea class="form-control" id="rewrite" name="rewrite" rows="7"></textarea>
+				<div id="div-syls" class="form-group">
+					<label class="control-label" for="syls">Syllable types</label>
+					<textarea class="form-control" id="syls" name="syls" rows="7"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<div class="form-group">
-					<label for="syls">Syllable types</label>
-					<textarea class="form-control" id="syls" name="syls" rows="7"></textarea>
+				<div id="div-rewr" class="form-group">
+					<label class="control-label" for="rewrite">Rewrite rules (optional)</label>
+					<textarea class="form-control" id="rewrite" name="rewrite" rows="7"></textarea>
 				</div>
 			</div>
 		</div>
@@ -147,13 +147,15 @@
 		</div>
 		
 		<div id="controls" class="row">
-			<div id="load-message" class="alert alert-info alert-dismissible flash-loadmsg" role="alert">
-				<button type="button" class="close" aria-label="Close" onclick="neuterOpenStyle(true);"><span aria-hidden="true">&times;</span></button>
-				<strong>Save file present!</strong> You have settings saved in your browser's local storage. If you want to see it, click Open. Or you can <a href="#" class="alert-link" onclick="deleteJSON();">delete</a> it if you want.
+			<!--
+			<div id="load-message" class="alert alert-info alert-dismissible" role="alert">
+				<button id="btn-dismissAlert" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong>Save file present!</strong> You have settings saved in your browser's local storage. If you want to see it, click Open. Or you can <a id="a-deleteData" href="" class="alert-link">delete</a> it if you want.
 			</div>
+			-->
 			<div id="btn-options-panel" class="text-center">
 				<div class="btn-group">
-					<a class="btn btn-primary" role="button" onClick="process();">Generate</a>
+					<a id="btn-generate" class="btn btn-primary" role="button">Generate</a>
 					<div class="btn-group">
 						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#generalHelp">Help me!</button>
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -162,16 +164,15 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li><a role="button" data-toggle="modal" data-target="#categoriesModal">Categories</a></li>
-							<li><a role="button" data-toggle="modal" data-target="#rewriteModal">Rewrite rules</a></li>
 							<li><a role="button" data-toggle="modal" data-target="#syllableModal">Syllable types</a></li>
+							<li><a role="button" data-toggle="modal" data-target="#rewriteModal">Rewrite rules</a></li>
 						</ul>
 					</div>
 					<a class="btn btn-default" role="button" data-toggle="modal" data-target="#ipaModal">IPA</a>
-					<a class="btn btn-default" id="btn-save" role="button" onClick="saveToJSON();">Save</a>
-					<a class="btn btn-warning" id="btn-open" role="button" onClick="loadFromJSON();">Open</a>
-					<a class="btn btn-default" role="button" onClick="defaultme();">Cycle presets</a>
-					<a class="btn btn-default" role="button" onClick="erase();">Clear output</a>
-					<a class="btn btn-danger" role="button" onClick="clearAll();">Clear all</a>
+					<a class="btn btn-default" id="btn-export" data-toggle="modal" data-target="#importExport" role="button">Import/Export</a>
+					<a class="btn btn-default" id="btn-cycle" role="button">Cycle presets</a>
+					<a class="btn btn-default" id="btn-clrOut" role="button">Clear output</a>
+					<a class="btn btn-danger" id="btn-clrAll" role="button">Clear all</a>
 				</div>
 			</div>
 		</div>
@@ -197,24 +198,27 @@
 					</blockquote>
 					<h3>Example</h3>
 					<p>With the default settings, you’ll get a pseudo-text, like this:</p>
-					<blockquote><p>Tapi opii piiai kledri pripaipu ota dopiči. Pluda detutra i uebopo giplao bi tra itra. Ii aedu baebu brobie tiglea brobo. Kaba do paepibe čipiduka igapri pripe. I di o etu epei e. Pe ibrapa io pebibri ti. Pai be klečii klu priple edi. Itekla pu pi uake preegi pipipii? Aketleii kakliokre ebao tiči opieti ebi utrii tii? Tepi pepi piipetrete gea čipu tripidipu? Itika poa be. A piiba i tiidie pleba tipači. Ei pibo giotoe tekebiblopi čii ti budetru pipudode? Apii kuke tepi kebi plečitrebri.</p></blockquote>
+					<blockquote><p>Tapi opii piiai kledri pripaipu ota dopiči. Pluda detutra i uebopo giplao bi tra itra. Ii aedu baebu brobie tiglea brobo. Kaba do paepibe čipiduka igapri pripe. I di o etu epei e. Pe ibrapa io pebibri ti. Pai be klečii klu priple edi.</p></blockquote>
 					<h3>Controls</h3>
 					<dl>
 						<dt>Output type</dt>
-						<dd>Tells whether you want pseudo-text, or a table of a hundred words. Pseudo-text is better for seeing what your language looks like, given the phonology and syllable types you’ve defined. Once you’re happy with the look and feel of the language, the word list is better for actually generating vocabulary.</dd>
+						<dd>Tells the app the kind of output you want. You can choose between a pseudo-text, a table of 150 words, or a wordlist. Pseudo-text is the best for seeing what your language looks like given the input phonology (<em>Categories</em>) and <em>Syllable types</em>. Once you fancy the look and feel of the language, <strong>the wordlist is better for actually generating vocabulary.</strong></dd>
 						<dt>All possible syllables</dt>
-						<dd>Output a list of all possible syllables. <strong>This option ignores the Dropoff and Monosyllables controls</strong>: it is not random at all, and it shows only single syllables.</dd>
+						<dd>This is a special output type; lists all possible syllables. This option ignores the <em>Dropoff</em> and <em>Monosyllables</em> controls. <strong>It is not random.</strong></dd>
 						<dt>Show syllables</dt>
-						<dd>Displays a dot between syllables in the output. A syllable is whatever you put in <em>Syllable types</em>.</dd>
+						<dd>Displays a dot between syllables in the output. A syllable is composed of the categories you put in <em>Syllable types</em> (for example, a <code>CV</code> syllable type is made of a sound from the <code>C</code> category followed by a sound from the <code>V</code> category).</dd>
 						<dt>Dropoff</dt>
-						<dd>Determines how fast the power law declines. If you have <code>C=ptkbdg</code>, then when outputing a <code>C</code>, normally <code>p</code> will come up the most, <code>t</code> a little less often, and so on, with <code>g</code> the least frequent. If you select fast dropoff, the probabilities will stack even more in favor of <code>p</code> (i.e. the first choice). If you select slow, the probabilities will distribute more evenly.</dd>
+						<dd>Determines how fast the power law declines. If you have a category <code>C</code> that has some sounds (<code>ptkbdg</code>), then when the app chooses a sound from category <code>C</code>, normally <code>p</code> will come up the most, <code>t</code> a little less often, and so on, with <code>g</code> the least frequent. If you select <em>Fast</em> dropoff, the probabilities will stack even more in favor of <code>p</code> (i.e. the first choice). If you select <em>Slow</em>, the probabilities will distribute more evenly.</dd>
 						<dt>Equiprobable</dt>
-						<dd>To turn off the power law entirely select <em>Equiprobable</em>, then gen will select the choices with equal frequency (again, this is a bad choice for a naturalistic language. But maybe you’re doing an auxlang or something).</dd>
+						<dd><strong>This type of dropoff ignores the power law entirely.</strong> When the app chooses a sound from a category, it does so with equal frequency (this is a bad idea for a natural language, but you may want to make something like an auxlang).</dd>
 						<dt>Slow syllable dropoff.</dt>
-						<dd>The <em>Dropoff</em> control doesn't affect the selection of syllable types. However, you can choose a more even distribution by checking <em>Slow syllable dropoff</em>.</dd>
+						<dd>The app chooses syllable types akin to choosing sounds from a category (i.e. the first comes up more times than the last). To affect this selection, you can force a more even distribution of syllable types by enabling this control.</dd>
 						<dt>Monosyllables</dt>
-						<dd>Tells how much of the output should be monosyllabic. You could set this to <em>Always</em> for an isolating language, for instance (even isolating languages have compounds, so if you want to generate words or text, use <em>Mostly</em>).</dd>
+						<dd>Tells the app how much of the output words should be monosyllabic. You could set this to <em>Always</em> for an isolating language, for instance (but even isolating languages have compounds, so if you want to generate words or text, use <em>Mostly</em>).</dd>
 					</dl>
+					<h4>Saving/Opening</h4>
+					<p>You can save your settings (categories, syllables, rewrite rules, and the control panel) to a JSON file. To do that, click Import/Export, and save the text into a .txt or .json file.</p>
+					<p>To import a JSON formatted settings, place your settings into the same dialog, and click <em>Import text</em>.</p>
 					<h4>About the app</h4>
 					<p>Original generator written by Mark Rosenfelder (<a href="http://zompist.com">zompist.com</a>)</p>
 					<p>"v2017" written by Zsolt Boda (<a href="http://bodzaital.github.io">bodzaital.github.io</a>)</p>
@@ -234,15 +238,15 @@
 					<h3 class="modal-title" id="myModalLabel">About Categories</h3>
 				</div>
 				<div class="modal-body">
-					<p>These are your phonological classes, defined by enumeration. The format is exactly the same as used by the <a href="http://www.zompist.com/sounds.htm">Sound Change Applier</a>. For instance, I might define my fricatives like this:</p>
+					<p><em>Categories</em> contain the phonology of the language: you can <strong>declare classes of sounds</strong> you’ll use in Syllable types. A class declaration looks like this:</p>
 					<pre>F=fvszšž</pre>
-					<p>That means that any time gen wants to output an <code>F</code> from the syllables list, it will randomly pick one of <code>f</code>, <code>v</code>, <code>s</code>, <code>z</code>, <code>š</code>, <code>ž</code>. As you can see, you can use Unicode! The phonemes in a category have to be single characters, but you can output digraphs using Rewrite rules.</p>
-					<p>The key thing to grasp is that the <strong>order determines the probability.</strong> The program runs through the phonemes in a category, with a 30% chance of stopping<sup>see below</sup> at each one. So the <code>F</code> definition above says that we want <code>f</code> to occur a lot and <code>ž</code> not that much.</p>
-					<p><small>That is, 30% for the recommended Medium dropoff. It’s 45% for <em>Fast</em> and 15% for <em>Slow</em>. Also, for computation speed, if it gets to the end of the choices it starts over.</small></p>
-					<p>The main corollary: Put the sounds you like first! Don’t list them in place of articulation order unless you really like labials. Try varying the order and hitting Generate to see how changing the order changes the output. Don’t overdo the classes - gen doesn’t know any phonology, and will be perfectly happy with a single class <code>C</code> for all consonants. You define a class for two reasons:</p>
+					<p>This means that anytime the app wants to output an <code>F</code> into a syllable, it will pick a sound from <code>f</code>, <code>v</code>, <code>s</code>, <code>z</code>, <code>š</code>, <code>ž</code>. You must use single characters, including Unicode characters. If you want a sound to be written using two or more characters, you can do so using <em>Rewrite rules</em>.</p>
+					<p>The order of the sound in a class determines the probability. The app runs through the phonemes in a category, with a 30% chance of stopping<sup>see below</sup> at each one. The example declaration <code>F</code> states that the sound <code>f</code> will occur a lot, and <code>ž</code> not as much.</p>
+					<p><small>That is, 30% for the recommended <em>Medium</em> dropoff. It’s 45% for <em>Fast</em> and 15% for <em>Slow</em>. Also, if it gets to the end of the choices it starts over.</small></p>
+					<p>Put the sounds you like first. Don’t list them in place of articulation order unless you like labials. Try varying the order and hitting Generate to see how changing the order changes the output. You don’t need to overdo the classes – the app doesn’t know any phonology, and will be perfectly happy with a single class <code>C</code> for all consonants, and a class <code>V</code> for all vowels. You define a class for two reasons:</p>
 					<ul>
-						<li>To control probabilities. For example we usually want stops to occur more than fricatives.</li>
-						<li>To enforce phonotactics. For example if the only initial clusters you allow are stop + liquid, then you need classes for stops and liquids.</li>
+						<li>To control probabilities. For example, we usually want stops to occur more than fricatives.</li>
+						<li>To enforce phonotactics. For example, if the only initial clusters you allow are stop + liquid, then you need classes for stops and liquids.</li>
 					</ul>
 				</div>
 				<div class="modal-footer">
@@ -279,16 +283,16 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h3 class="modal-title" id="myModalLabel">About Rewrite rules</h3>
+					<h3 class="modal-title" id="myModalLabel">About Syllable types</h3>
 				</div>
 				<div class="modal-body">
-					<p>The Syllable types field defines your phonotactics... your allowed syllable types. For example the sample above is defined with these syllables:</p>
+					<p><em>Syllable types</em> contain the phonotactics of the language: you can <strong>declare allowed syllables</strong>. A syllable here contains the class you declared in <em>Categories</em>. Syllable types may look like this (you must’ve declared classes <code>C</code>, <code>V</code>, and <code>R</code> in <em>Categories</em> beforehand):</p>
 					<pre>CV&#13;&#10V&#13;&#10CRV</pre>
-					<p>The syllable types also follow a power law, so put the ones you like first. Or to be precise, if you want a particular type to be more common, move it up in the list. Put just one syllable per line (otherwise gen will just treat whatever you put on one line as a syllable type). In general, more complex types should occur further on. However, I find that pure vowel syllables (like V in the example) should be less frequent than ones that begin with a consonant.</p>
-					<p>The process does not handle parentheses. So if you have a syllable type like <code>(C(R))V(V)(N)</code>, you must list the possibilities— in this case, <code>V</code>, <code>VV</code>, <code>VN</code>, <code>VVN</code>, <code>CV</code>, <code>CVV</code>, <code>CVN</code>, <code>CVVN</code>, <code>CRV</code>, <code>CRVV</code>, <code>CRVN</code>, <code>CRVVN</code>. This is a good thing, because it allows you to set the relative probabilities of each syllable type (how do you decide on the order? Trial and error works fine. Change the order and hit Generate again. Repeat till it looks good).</p>
-					<p>The symbols you use here (in the last example <code>C</code>, <code>V</code>, <code>R</code>, <code>N</code>) must be defined in the categories box— they are your phonological classes.</p>
-					<p>So when gen needs to generate a syllable, it selects randomly from the syllable type - lets say it picks <code>CRV</code>. Now it looks up <code>C</code> in the <em>Categories</em> box. Suppose it finds the definition <code>C=ptkbdg</code>. It randomly picks one of those choices. Then it moves on to <code>R</code>, then <code>V</code>. And so on.</p>
-					<p>If there are any undefined symbols, they will be passed through to the output. For example you could add a syllable <code>khV</code> and gen will cheerfully generate <code>khe</code>, <code>khi</code>, etc.</p>
+					<p>The syllable types also follow a power law, so <strong>put the ones you want to be more common</strong>. Write just one syllable per line (otherwise the app will just treat whatever you put on one line as a syllable type). In general, more complex types should occur further on. Pure vowel syllables (like <code>V</code> in the example) should be less frequent than ones that begin with a consonant.</p>
+					<p>The process does not handle parentheses. So if you have a syllable type like <code>(C(R))V(V)(N)</code>, you must list the possibilities - in this case, <code>V</code>, <code>VV</code>, <code>VN</code>, <code>VVN</code>, <code>CV</code>, <code>CVV</code>, <code>CVN</code>, <code>CVVN</code>, <code>CRV</code>, <code>CRVV</code>, <code>CRVN</code>, <code>CRVVN</code>. This allows you to set the relative probabilities of each syllable type. How do you decide on the order? Trial and error works fine. Change the order and hit <em>Generate</em> again. Repeat till it looks good).</p>
+					<p>The symbols used here (in the last example <code>C</code>, <code>V</code>, <code>R</code>, <code>N</code>) must be defined in <em>Categories</em> - they are your phonological classes.</p>
+					<p>When the app needs to generate a syllable, it selects randomly from the <em>Syllable types</em> – let’s say it picks <code>CRV</code>. Now it looks up class <code>C</code> in <em>Categories</em>. Suppose it finds the definition <code>C=ptkbdg</code>. It randomly picks one of those choices. Then it moves on to classes <code>R</code> then <code>V</code>. And so on.</p>
+					<p>If there are any undefined symbols, they will be passed through to the output. For example you could add a syllable <code>khV</code> and the app will cheerfully generate <code>khe</code>, <code>khi</code>, etc.</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Got it</button>
@@ -312,6 +316,27 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Got it</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="importExport" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h3 class="modal-title" id="myModalLabel">Import/Export</h3>
+				</div>
+				<div class="modal-body">
+					<p>Copy and save this data in a text or JSON file.</p>
+					<label class="control-label" for="imex">Data</label>
+					<textarea class="form-control" id="imex" name="imex" rows="14"></textarea>
+					<p>If you want to import, paste your JSON data here, and click <em>Import text</em>.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					<button type="button" id="btn-import" class="btn btn-primary" data-dismiss="modal">Import text</button>
 				</div>
 			</div>
 		</div>
